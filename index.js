@@ -10,7 +10,7 @@ app.use(formidableMiddleware());
 app.use(cors());
 app.use(helmet());
 
-mongoose.connect("mongodb://localhost/yuka", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/yuka", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -26,6 +26,6 @@ app.get("/", function(req, res) {
 app.all("*", function(req, res) {
   res.status(404).json({ error: "Page not found" });
 });
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Server has started");
 });
