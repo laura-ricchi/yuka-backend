@@ -1,1 +1,1 @@
-# yuka-backend
+# Project Yuka-backend (Full Stack)
