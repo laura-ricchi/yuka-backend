@@ -64,9 +64,7 @@ router.post("/user/log-in", async (req, res) => {
       res.json({
         _id: user._id,
         token: user.token,
-        email: req.fields.email,
-        username: req.fields.username,
-        name: req.fields.name
+        email: req.fields.email
       });
     } else {
       return res.status(401).json({ error: "Unauthorized" });
