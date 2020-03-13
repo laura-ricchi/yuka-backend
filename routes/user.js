@@ -8,27 +8,27 @@ const User = require("../models/User");
 
 // Route Sign-Up
 router.post("/user/sign-up", async (req, res) => {
-  const userEmail = await User.findOne({ email: req.fields.email });
+  try {
+    const userEmail = await User.findOne({ email: req.fields.email });
 
-  const userUsername = await User.findOne({
-    username: req.fields.username
-  });
+    const userUsername = await User.findOne({
+      username: req.fields.username
+    });
 
-  if (userEmail) {
-    res.status(400).json({ error: "This email already has an account." });
-  } else if (userUsername) {
-    res.status(400).json({ error: "This username already has an account." });
-  } else {
-    if (
-      req.fields.email &&
-      req.fields.username &&
-      req.fields.password &&
-      req.fields.name
-    ) {
-      const token = uid2(64);
-      const salt = uid2(64);
-      const hash = SHA256(req.fields.password + salt).toString(encBase64);
-      try {
+    if (userEmail) {
+      res.status(400).json({ error: "This email already has an account." });
+    } else if (userUsername) {
+      res.status(400).json({ error: "This username already has an account." });
+    } else {
+      if (
+        req.fields.email &&
+        req.fields.username &&
+        req.fields.password &&
+        req.fields.name
+      ) {
+        const token = uid2(64);
+        const salt = uid2(64);
+        const hash = SHA256(req.fields.password + salt).toString(encBase64);
         const newUser = new User({
           email: req.fields.email,
           token: token,
@@ -45,12 +45,13 @@ router.post("/user/sign-up", async (req, res) => {
           username: req.fields.username,
           name: req.fields.name
         });
-      } catch (error) {
-        res.status(400).json({ error: error.message });
+      } else {
+        res.status(400).json({ error: "Missing parameters" });
       }
-    } else {
-      res.status(400).json({ error: "Missing parameters" });
     }
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ error: error.message });
   }
 });
 // Route Log-In
