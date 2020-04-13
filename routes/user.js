@@ -69,10 +69,10 @@ router.post("/user/log-in", async (req, res) => {
         name: user.name,
       });
     } else {
-      res.json("username or email incorrect");
+      return res.json("username or email incorrect");
     }
   } else {
-    res.json({ message: "User not found" });
+    return res.json({ message: "User not found" });
   }
 });
 
