@@ -12,7 +12,7 @@ router.post("/user/sign-up", async (req, res) => {
     const userEmail = await User.findOne({ email: req.fields.email });
 
     const userUsername = await User.findOne({
-      username: req.fields.username
+      username: req.fields.username,
     });
 
     if (userEmail) {
@@ -35,7 +35,7 @@ router.post("/user/sign-up", async (req, res) => {
           salt: salt,
           hash: hash,
           username: req.fields.username,
-          name: req.fields.name
+          name: req.fields.name,
         });
         await newUser.save();
         res.json({
@@ -43,7 +43,7 @@ router.post("/user/sign-up", async (req, res) => {
           token: newUser.token,
           email: newUser.email,
           username: req.fields.username,
-          name: req.fields.name
+          name: req.fields.name,
         });
       } else {
         res.status(400).json({ error: "Missing parameters" });
@@ -66,10 +66,10 @@ router.post("/user/log-in", async (req, res) => {
         token: user.token,
         email: user.email,
         username: user.username,
-        name: user.name
+        name: user.name,
       });
     } else {
-      return res.status(401).json({ error: "Unauthorized" });
+      res.json("Identifiant ou mot de passe incorrect");
     }
   } else {
     res.json({ message: "User not found" });
